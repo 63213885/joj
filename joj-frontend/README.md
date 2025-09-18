@@ -1,4 +1,4 @@
-# jzzoj-frontend
+# joj-frontend
 
 ## Project setup
 ```
