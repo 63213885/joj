@@ -1,22 +1,14 @@
 <template>
-  <a-row id="globalHeader" style="margin-bottom: 16px" align="center">
+  <a-row id="globalHeader" align="center" :wrap="false">
     <a-col flex="auto">
-      <a-menu
-        mode="horizontal"
-        :selected-keys="selectedKeys"
-        @menu-item-click="doMenuclick"
-      >
-        <a-menu-item
-          key="0"
-          :style="{ padding: 0, marginRight: '38px' }"
-          disabled
-        >
+      <a-menu mode="horizontal" :selected-keys="selectedKeys" @menu-item-click="doMenuclick">
+        <a-menu-item key="0" :style="{ padding: 0, marginRight: '38px' }" disabled>
           <div class="title-bar">
             <img class="logo" src="@/assets/oj-logo.svg" />
             <div class="title">joj</div>
           </div>
         </a-menu-item>
-        <a-menu-item v-for="item in routes" :key="item.path">
+        <a-menu-item v-for="item in visibleRoutes" :key="item.path">
           {{ item.name }}
         </a-menu-item>
       </a-menu>
@@ -30,10 +22,27 @@
 <script setup lang="ts">
 import { routes } from "@/router/routes";
 import { useRouter } from "vue-router";
-import { onUnmounted, ref } from "vue";
+import { computed, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
+import checkAccess from "@/access/checkAccess";
+import ACCESS_ENUM from "@/access/accessEnum";
 
 const router = useRouter();
+const store = useStore();
+
+// 展示在菜单的路由数组
+const visibleRoutes = computed(() => {
+  return routes.filter((item, index) => {
+    if (item.meta?.hideInMenu) {
+      return false;
+    }
+    if (!checkAccess(store.state.user.loginUser, item?.meta?.access as string)) {
+      return false;
+    }
+    return true;
+  });
+});
+console.log(visibleRoutes.value);
 
 // 默认主页
 const selectedKeys = ref(["/"]);
@@ -43,14 +52,20 @@ router.afterEach((to, from, failure) => {
   selectedKeys.value = [to.path];
 });
 
-const store = useStore();
+console.log(store.state.user.loginUser);
 
-// setTimeout(() => {
-//   store.dispatch("user/getLoginUser", {
-//     userName: "jzz",
-//     role: "admin",
-//   });
-// }, 3000);
+setTimeout(() => {
+  store.dispatch("user/getLoginUser", {
+    userName: "jzz",
+    userRole: ACCESS_ENUM.ADMIN,
+  });
+  console.log(store.state.user.loginUser);
+  console.log(visibleRoutes.value);
+  // visibleRoutes.filter((item, index) => {
+  //   console.log(item);
+  //   return true;
+  // });
+}, 3000);
 
 const doMenuclick = (key: string) => {
   router.push({
