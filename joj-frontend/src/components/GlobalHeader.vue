@@ -42,7 +42,6 @@ const visibleRoutes = computed(() => {
     return true;
   });
 });
-console.log(visibleRoutes.value);
 
 // 默认主页
 const selectedKeys = ref(["/"]);
@@ -52,15 +51,15 @@ router.afterEach((to, from, failure) => {
   selectedKeys.value = [to.path];
 });
 
-console.log(store.state.user.loginUser);
+// console.log(store.state.user.loginUser);
 
 setTimeout(() => {
   store.dispatch("user/getLoginUser", {
     userName: "jzz",
     userRole: ACCESS_ENUM.ADMIN,
   });
-  console.log(store.state.user.loginUser);
-  console.log(visibleRoutes.value);
+  // console.log(store.state.user.loginUser);
+  // console.log(visibleRoutes.value);
   // visibleRoutes.filter((item, index) => {
   //   console.log(item);
   //   return true;
