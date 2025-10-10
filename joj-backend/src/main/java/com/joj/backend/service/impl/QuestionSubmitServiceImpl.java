@@ -1,23 +1,18 @@
 package com.joj.backend.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joj.backend.common.ErrorCode;
 import com.joj.backend.exception.BusinessException;
 import com.joj.backend.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.joj.backend.model.entity.Question;
 import com.joj.backend.model.entity.QuestionSubmit;
-import com.joj.backend.model.entity.QuestionSubmit;
 import com.joj.backend.model.entity.User;
 import com.joj.backend.model.enums.QuestionSubmitLanguageEnum;
 import com.joj.backend.model.enums.QuestionSubmitStatusEnum;
 import com.joj.backend.service.QuestionService;
 import com.joj.backend.service.QuestionSubmitService;
-import com.joj.backend.service.QuestionSubmitService;
 import com.joj.backend.mapper.QuestionSubmitMapper;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
