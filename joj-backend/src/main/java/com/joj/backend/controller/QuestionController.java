@@ -10,10 +10,7 @@ import com.joj.backend.common.ResultUtils;
 import com.joj.backend.constant.UserConstant;
 import com.joj.backend.exception.BusinessException;
 import com.joj.backend.exception.ThrowUtils;
-import com.joj.backend.model.dto.question.QuestionAddRequest;
-import com.joj.backend.model.dto.question.QuestionEditRequest;
-import com.joj.backend.model.dto.question.QuestionQueryRequest;
-import com.joj.backend.model.dto.question.QuestionUpdateRequest;
+import com.joj.backend.model.dto.question.*;
 import com.joj.backend.model.entity.Question;
 import com.joj.backend.model.entity.User;
 import com.joj.backend.model.vo.QuestionVO;
@@ -61,12 +58,21 @@ public class QuestionController {
         if (tags != null) {
             question.setTags(JSONUtil.toJsonStr(tags));
         }
+        JudgeConfig judgeConfig = questionAddRequest.getJudgeConfig();
+        if (judgeConfig != null) {
+            question.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
+        }
+        List<JudgeCase> judgeCase = questionAddRequest.getJudgeCase();
+        if (judgeCase != null) {
+            question.setJudgeCase(JSONUtil.toJsonStr(judgeCase));
+        }
         questionService.validQuestion(question, true);
         User loginUser = userService.getLoginUser(request);
         question.setUserId(loginUser.getId());
         question.setFavourNum(0);
         question.setThumbNum(0);
         boolean result = questionService.save(question);
+        log.info("result = {}, question = {}", result, question);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         long newQuestionId = question.getId();
         return ResultUtils.success(newQuestionId);
@@ -113,7 +119,15 @@ public class QuestionController {
         BeanUtils.copyProperties(questionUpdateRequest, question);
         List<String> tags = questionUpdateRequest.getTags();
         if (tags != null) {
-            question.setTags(JSONUtil.toJsonStr(tags));
+            question.setTags(JSONUtil.toJsonStr(tags)); // GSON.toJson
+        }
+        JudgeConfig judgeConfig = questionUpdateRequest.getJudgeConfig();
+        if (judgeConfig != null) {
+            question.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
+        }
+        List<JudgeCase> judgeCase = questionUpdateRequest.getJudgeCase();
+        if (judgeCase != null) {
+            question.setJudgeCase(JSONUtil.toJsonStr(judgeCase));
         }
         // 参数校验
         questionService.validQuestion(question, false);
@@ -144,7 +158,7 @@ public class QuestionController {
     }
 
     /**
-     * 分页获取列表（仅管理员）
+     * 分页获取题目列表（仅管理员）
      *
      * @param questionQueryRequest
      * @return

@@ -6,6 +6,7 @@ import com.joj.backend.model.entity.Question;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @TableName question
  */
 @Data
-public class QuestionVO {
+public class QuestionVO implements Serializable {
     /**
      * id
      */
