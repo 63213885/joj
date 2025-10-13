@@ -77,10 +77,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
 import { QuestionControllerService } from "../../../generated";
+import { Message } from "@arco-design/web-vue";
+import { useRoute } from "vue-router";
 import message from "@arco-design/web-vue/es/message";
+
+const route = useRoute();
+// 如果页面URL包含update，视为更新页面
+const updatePage = route.path.includes("update");
 
 const form = reactive({
   title: "",
@@ -100,13 +106,45 @@ const form = reactive({
   ],
 });
 
+/**
+ * 根据题目id获取老的数据
+ */
+const loadData = async () => {
+  const id = route.query.id;
+  if (!id) {
+    return;
+  }
+  const resp = await QuestionControllerService.getQuestionByIdUsingGet(id as any);
+  if (resp.code === 0) {
+    Object.assign(form, resp.data);
+    form.judgeConfig = JSON.parse(resp.data?.judgeConfig as string);
+    form.tags = JSON.parse(resp.data?.tags as string);
+    form.judgeCase = JSON.parse(resp.data?.judgeCase as string);
+  } else {
+    message.error("加载失败：" + resp.message);
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
 const doSubmit = async () => {
   console.log(form);
-  const resp = await QuestionControllerService.addQuestionUsingPost(form);
-  if (resp.code === 0) {
-    message.success("创建成功");
+  if (updatePage) {
+    const resp = await QuestionControllerService.updateQuestionUsingPost(form);
+    if (resp.code === 0) {
+      Message.success("更新成功");
+    } else {
+      Message.error("更新失败：" + resp.message);
+    }
   } else {
-    message.error("创建失败：", resp.message);
+    const resp = await QuestionControllerService.addQuestionUsingPost(form);
+    if (resp.code === 0) {
+      Message.success("创建成功");
+    } else {
+      Message.error("创建失败：" + resp.message);
+    }
   }
 };
 
