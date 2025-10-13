@@ -3,7 +3,8 @@
     <a-table
       :columns="columns"
       :data="dataList"
-      :pagination="{ showTotal: true, pageSize: searchParams.pageSize, current: searchParams.pageNum, total }"
+      :pagination="{ showTotal: true, pageSize: searchParams.pageSize, current: searchParams.current, total }"
+      @page-change="onPageChange"
     >
       <template #optional="{ record }">
         <a-space>
@@ -16,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watchEffect } from "vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
@@ -26,8 +27,8 @@ const show = ref(true);
 const dataList = ref([]);
 const total = ref(10);
 const searchParams = reactive({
-  pageSize: 10,
-  pageNum: 1,
+  pageSize: 2,
+  current: 1,
 });
 
 const loadData = async () => {
@@ -117,6 +118,24 @@ const doUpdate = (question: Question) => {
       id: question.id,
     },
   });
+};
+
+/**
+ * 监听函数体内所有变量
+ * （但是reactive怎么这么煞笔，watchEffect不监测对象）
+ */
+watchEffect(() => {
+  loadData();
+});
+
+const onPageChange = (page: number) => {
+  console.log(page);
+  Object.assign(searchParams, {
+    ...searchParams,
+    current: page,
+  });
+  console.log(searchParams);
+  // loadData();
 };
 </script>
 
