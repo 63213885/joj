@@ -56,7 +56,7 @@ const handleSubmit = async () => {
       replace: true,
     });
   } else {
-    message.error("登录失败，" + resp.message);
+    message.error("登录失败：" + resp.message);
   }
 };
 </script>

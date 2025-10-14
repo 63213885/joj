@@ -53,6 +53,11 @@ router.afterEach((to, from, failure) => {
 
 // console.log(store.state.user.loginUser);
 
+// store.dispatch("user/getLoginUser", {
+//   userName: "jzz",
+//   userRole: ACCESS_ENUM.ADMIN,
+// });
+
 setTimeout(() => {
   store.dispatch("user/getLoginUser", {
     userName: "jzz",

@@ -3,7 +3,12 @@
     <a-table
       :columns="columns"
       :data="dataList"
-      :pagination="{ showTotal: true, pageSize: searchParams.pageSize, current: searchParams.current, total }"
+      :pagination="{
+        showTotal: true,
+        pageSize: searchParams.pageSize,
+        current: searchParams.current,
+        total,
+      }"
       @page-change="onPageChange"
     >
       <template #optional="{ record }">
@@ -125,6 +130,7 @@ const doUpdate = (question: Question) => {
  * （但是reactive怎么这么煞笔，watchEffect不监测对象）
  */
 watchEffect(() => {
+  Object.values(searchParams);
   loadData();
 });
 
