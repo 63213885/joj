@@ -121,8 +121,9 @@ const toQuestionPage = (question: Question) => {
  * （但是reactive怎么这么煞笔，watchEffect不监测对象）
  */
 watchEffect(() => {
-  searchParams.pageSize;
-  searchParams.current;
+  // searchParams.pageSize;
+  // searchParams.current;
+  Object.values(searchParams);
   loadData();
 });
 
