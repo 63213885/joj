@@ -58,18 +58,18 @@ router.afterEach((to, from, failure) => {
 //   userRole: ACCESS_ENUM.ADMIN,
 // });
 
-setTimeout(() => {
-  store.dispatch("user/getLoginUser", {
-    userName: "jzz",
-    userRole: ACCESS_ENUM.ADMIN,
-  });
-  // console.log(store.state.user.loginUser);
-  // console.log(visibleRoutes.value);
-  // visibleRoutes.filter((item, index) => {
-  //   console.log(item);
-  //   return true;
-  // });
-}, 3000);
+// setTimeout(() => {
+//   store.dispatch("user/getLoginUser", {
+//     userName: "jzz",
+//     userRole: ACCESS_ENUM.ADMIN,
+//   });
+//   // console.log(store.state.user.loginUser);
+//   // console.log(visibleRoutes.value);
+//   // visibleRoutes.filter((item, index) => {
+//   //   console.log(item);
+//   //   return true;
+//   // });
+// }, 3000);
 
 const doMenuclick = (key: string) => {
   router.push({

@@ -5,7 +5,7 @@
         <a-input v-model="searchParams.title" placeholder="请输入名称" />
       </a-form-item>
       <a-form-item field="tags" label="标签" style="min-width: 280px">
-        <a-input v-model="searchParams.tags" placeholder="请输入标签" />
+        <a-input-tag v-model="searchParams.tags" placeholder="请输入标签" />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="doSubmit">提交</a-button>
