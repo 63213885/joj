@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ExecuteCodeResponse {
 
-    private List<String> ontputList;
+    private List<String> outputList;
 
     /**
      * 接口信息
