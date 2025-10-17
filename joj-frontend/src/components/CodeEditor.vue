@@ -39,26 +39,14 @@ const codeEditor = ref();
 //   toRaw(codeEditor.value).setValue("new value");
 // };
 
-// watch(
-//   () => props.language,
-//   () => {
-//     alert(props.language);
-// codeEditor.value = monaco.editor.create(codeEditorRef.value, {
-//   value: props.language,
-//   language: props.language,
-//   automaticLayout: true,
-//   minimap: {
-//     enabled: true,
-//     scale: 5,
-//   },
-//   // lineNumbers: "off",
-//   // roundedSelection: false,
-//   // scrollBeyondLastLine: false,
-//   readOnly: false,
-//   theme: "vs-dark",
-// });
-//   }
-// );
+watch(
+  () => props.language,
+  () => {
+    if (codeEditor.value) {
+      monaco.editor.setModelLanguage(toRaw(codeEditor.value).getModel(), props.language);
+    }
+  }
+);
 
 onMounted(() => {
   if (!codeEditorRef.value) {
