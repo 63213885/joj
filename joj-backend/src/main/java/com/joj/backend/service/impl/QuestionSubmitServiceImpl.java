@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joj.backend.common.ErrorCode;
 import com.joj.backend.constant.CommonConstant;
 import com.joj.backend.exception.BusinessException;
+import com.joj.backend.judge.JudgeService;
 import com.joj.backend.model.dto.question.QuestionQueryRequest;
 import com.joj.backend.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.joj.backend.model.dto.questionsubmit.QuestionSubmitQueryRequest;
@@ -23,9 +24,11 @@ import com.joj.backend.service.QuestionSubmitService;
 import com.joj.backend.mapper.QuestionSubmitMapper;
 import com.joj.backend.service.UserService;
 import com.joj.backend.utils.SqlUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -41,13 +45,19 @@ import java.util.stream.Collectors;
 * @createDate 2025-10-10 20:36:04
 */
 @Service
+@Slf4j
 public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper, QuestionSubmit>
     implements QuestionSubmitService{
 
     @Resource
     private QuestionService questionService;
-    @Autowired
+
+    @Resource
     private UserService userService;
+
+    @Resource
+    @Lazy
+    private JudgeService judgeService;
 
     /**
      * 题目提交
@@ -90,7 +100,10 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目提交失败");
         }
         // todo 执行判题服务
-
+        log.info("开始执行判题");
+        CompletableFuture.runAsync(() -> {
+            judgeService.doJudge(questionSubmit.getId());
+        });
         return questionSubmit.getId();
     }
 

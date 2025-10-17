@@ -22,7 +22,7 @@ public class ExampleCodeSandBoxImpl implements CodeSandBox {
         String code = executeCodeRequest.getCode();
         String language = executeCodeRequest.getLanguage();
 
-        log.info("代码沙箱请求参数：{}", executeCodeRequest.toString());
+        log.info("代码沙箱请求参数：{}", executeCodeRequest);
         ExecuteCodeResponse executeCodeResponse = new ExecuteCodeResponse();
         executeCodeResponse.setOutputList(inputList);
         executeCodeResponse.setMessage("测试代码沙箱成功");

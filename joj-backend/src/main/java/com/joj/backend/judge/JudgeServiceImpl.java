@@ -19,7 +19,9 @@ import com.joj.backend.model.entity.QuestionSubmit;
 import com.joj.backend.model.enums.QuestionSubmitStatusEnum;
 import com.joj.backend.service.QuestionService;
 import com.joj.backend.service.QuestionSubmitService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class JudgeServiceImpl implements JudgeService {
 
     @Resource
@@ -52,14 +55,16 @@ public class JudgeServiceImpl implements JudgeService {
 
         // 更新判题状态 运行中
         QuestionSubmit questionSubmitUpdate = new QuestionSubmit();
-        questionSubmitUpdate.setId(questionId);
+        questionSubmitUpdate.setId(questionSubmitId);
         questionSubmitUpdate.setStatus(QuestionSubmitStatusEnum.RUNNING.getValue());
         boolean update = questionSubmitService.updateById(questionSubmitUpdate);
+        log.info("更新题目状态为running, questionSubmitUpdate: {}, update: {}", questionSubmitUpdate, update);
         if (!update) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目状态更新错误");
         }
 
         // 调用沙箱
+        log.info("沙箱开始执行");
         CodeSandBox codeSandBox = CodeSandBoxFactory.newInstance(type);
         codeSandBox = new CodeSandBoxProxy(codeSandBox);
 
@@ -88,11 +93,13 @@ public class JudgeServiceImpl implements JudgeService {
         JudgeInfo judgeInfoResult = judgeStrategy.doJudge(judgeContext);
 
         // 修改数据库中的判题结果
+        log.info("开始更新数据库");
         questionSubmitUpdate = new QuestionSubmit();
-        questionSubmitUpdate.setId(questionId);
+        questionSubmitUpdate.setId(questionSubmitId);
         questionSubmitUpdate.setStatus(QuestionSubmitStatusEnum.SUCCEED.getValue());
         questionSubmitUpdate.setJudgeInfo(JSONUtil.toJsonStr(judgeInfoResult));
         update = questionSubmitService.updateById(questionSubmitUpdate);
+        log.info("更新数据库成功, questionSubmitUpdate: {}, update: {}", questionSubmitUpdate, update);
         if (!update) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目状态更新错误");
         }
