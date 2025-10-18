@@ -1,4 +1,4 @@
-package com.joj.backend.model.dto.questionsubmit;
+package com.joj.codesandbox.model;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.joj.backend.judge.codesandbox.model;
+package com.joj.codesandbox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -13,7 +13,7 @@ import com.joj.backend.judge.strategy.JavaLanguageJudgeStrategy;
 import com.joj.backend.judge.strategy.JudgeContext;
 import com.joj.backend.judge.strategy.JudgeStrategy;
 import com.joj.backend.model.dto.question.JudgeCase;
-import com.joj.backend.model.dto.questionsubmit.JudgeInfo;
+import com.joj.backend.judge.codesandbox.model.JudgeInfo;
 import com.joj.backend.model.entity.Question;
 import com.joj.backend.model.entity.QuestionSubmit;
 import com.joj.backend.model.enums.QuestionSubmitStatusEnum;
@@ -21,7 +21,6 @@ import com.joj.backend.service.QuestionService;
 import com.joj.backend.service.QuestionSubmitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

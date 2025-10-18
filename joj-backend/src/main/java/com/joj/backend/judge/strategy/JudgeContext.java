@@ -1,9 +1,8 @@
 package com.joj.backend.judge.strategy;
 
 import com.joj.backend.model.dto.question.JudgeCase;
-import com.joj.backend.model.dto.questionsubmit.JudgeInfo;
+import com.joj.backend.judge.codesandbox.model.JudgeInfo;
 import com.joj.backend.model.entity.Question;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;

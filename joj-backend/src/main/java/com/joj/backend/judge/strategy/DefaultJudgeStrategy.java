@@ -3,7 +3,7 @@ package com.joj.backend.judge.strategy;
 import cn.hutool.json.JSONUtil;
 import com.joj.backend.model.dto.question.JudgeCase;
 import com.joj.backend.model.dto.question.JudgeConfig;
-import com.joj.backend.model.dto.questionsubmit.JudgeInfo;
+import com.joj.backend.judge.codesandbox.model.JudgeInfo;
 import com.joj.backend.model.entity.Question;
 import com.joj.backend.model.enums.JudgeInfoMessageEnum;
 

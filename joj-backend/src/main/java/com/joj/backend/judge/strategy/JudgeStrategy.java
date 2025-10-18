@@ -1,6 +1,6 @@
 package com.joj.backend.judge.strategy;
 
-import com.joj.backend.model.dto.questionsubmit.JudgeInfo;
+import com.joj.backend.judge.codesandbox.model.JudgeInfo;
 
 /**
  * 判题策略
