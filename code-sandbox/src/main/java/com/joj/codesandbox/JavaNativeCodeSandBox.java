@@ -1,6 +1,5 @@
 package com.joj.codesandbox;
 
-import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.StrUtil;
@@ -11,16 +10,13 @@ import com.joj.codesandbox.model.JudgeInfo;
 import com.joj.codesandbox.utils.ProcessUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class JavaNativeCodeSandBox implements CodeSandBox {
@@ -29,11 +25,14 @@ public class JavaNativeCodeSandBox implements CodeSandBox {
 
     private static final String GLOBAL_JAVA_CLASS_NAME = "Main.java";
 
+    private static final long TIME_OUT = 5000L;
+
     public static void main(String[] args) {
         JavaNativeCodeSandBox javaNativeCodeSandBox = new JavaNativeCodeSandBox();
         ExecuteCodeRequest executeCodeRequest = new ExecuteCodeRequest();
         executeCodeRequest.setInputList(Arrays.asList("1 2", "3 4"));
-        String code = ResourceUtil.readStr("testCode/simpleCompute/Main.java", StandardCharsets.UTF_8);
+//        String code = ResourceUtil.readStr("testCode/simpleCompute/Main.java", StandardCharsets.UTF_8);
+        String code = ResourceUtil.readStr("testCode/unsafeCode/RunFile.java", StandardCharsets.UTF_8);
         System.out.println(code);
         executeCodeRequest.setCode(code);
         executeCodeRequest.setLanguage("java");
@@ -68,23 +67,33 @@ public class JavaNativeCodeSandBox implements CodeSandBox {
             ExecuteMessage executeMessage = ProcessUtils.runProcessAndGetMessage(compileProcess, "编译");
             log.info("编译结果：{}", executeMessage);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return getResponse(e);
         }
 
         // 执行代码，得到输出结果
-
         List<ExecuteMessage> executeMessageList = new ArrayList<>();
         for (String input : inputList) {
             String runCmd = String.format("java -Dfile.encoding=UTF-8 -cp %s Main %s", userCodeParentPath, input);
             log.info("执行代码命令：{}", runCmd);
+
             try {
                 Process runProcess = Runtime.getRuntime().exec(runCmd);
                 // ExecuteMessage executeMessage = ProcessUtils.runProcessAndGetMessage(runProcess, "运行");
+
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(TIME_OUT);
+                        runProcess.destroy();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+
                 ExecuteMessage executeMessage = ProcessUtils.runInteractProcessAndGetMessage(runProcess, "运行", input);
                 log.info("运行结果：{}", executeMessage);
                 executeMessageList.add(executeMessage);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                return getResponse(e);
             }
         }
 
@@ -122,6 +131,21 @@ public class JavaNativeCodeSandBox implements CodeSandBox {
 
         // 错误处理
 
+        return executeCodeResponse;
+    }
+
+    /**
+     * 获取错误响应
+     *
+     * @param e
+     * @return
+     */
+    private ExecuteCodeResponse getResponse(Throwable e) {
+        ExecuteCodeResponse executeCodeResponse = new ExecuteCodeResponse();
+        executeCodeResponse.setOutputList(new ArrayList<>());
+        executeCodeResponse.setMessage(e.getMessage());
+        executeCodeResponse.setStatus(2);
+        executeCodeResponse.setJudgeInfo(new JudgeInfo());
         return executeCodeResponse;
     }
 }
