@@ -6,6 +6,6 @@ public class Main {
         System.out.println("jzz");
         Integer a = sc.nextInt();
         Integer b = sc.nextInt();
-        System.out.println(a + b);
+        System.out.println("answer = " + (a + b));
     }
 }
