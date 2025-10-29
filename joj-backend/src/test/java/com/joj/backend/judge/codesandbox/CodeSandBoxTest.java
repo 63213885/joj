@@ -1,6 +1,5 @@
 package com.joj.backend.judge.codesandbox;
 
-import com.joj.backend.judge.codesandbox.impl.ExampleCodeSandBoxImpl;
 import com.joj.backend.judge.codesandbox.model.ExecuteCodeRequest;
 import com.joj.backend.judge.codesandbox.model.ExecuteCodeResponse;
 import com.joj.backend.model.enums.QuestionSubmitLanguageEnum;
@@ -10,9 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CodeSandBoxTest {

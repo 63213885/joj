@@ -1,8 +1,8 @@
 package com.joj.backend.judge.codesandbox;
 
-import com.joj.backend.judge.codesandbox.impl.ExampleCodeSandBoxImpl;
-import com.joj.backend.judge.codesandbox.impl.RemoteCodeSandBoxImpl;
-import com.joj.backend.judge.codesandbox.impl.ThirdPartyCodeSandBoxImpl;
+import com.joj.backend.judge.codesandbox.impl.ExampleCodeSandBox;
+import com.joj.backend.judge.codesandbox.impl.RemoteCodeSandBox;
+import com.joj.backend.judge.codesandbox.impl.ThirdPartyCodeSandBox;
 
 /**
  * 代码沙箱工厂（创建调用不同的代码沙箱）
@@ -16,11 +16,11 @@ public class CodeSandBoxFactory {
      */
     public static CodeSandBox newInstance(String type) {
         if (type.equals("example")) {
-            return new ExampleCodeSandBoxImpl();
+            return new ExampleCodeSandBox();
         } else if (type.equals("remote")) {
-            return new RemoteCodeSandBoxImpl();
+            return new RemoteCodeSandBox();
         } else {
-            return new ThirdPartyCodeSandBoxImpl();
+            return new ThirdPartyCodeSandBox();
         }
     }
 }

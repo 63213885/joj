@@ -42,13 +42,7 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, watchEffect, withDefaults, defineProps } from "vue";
-import {
-  Question,
-  QuestionControllerService,
-  QuestionSubmitAddRequest,
-  QuestionSubmitControllerService,
-  QuestionVO,
-} from "../../../generated";
+import { Question, QuestionControllerService, QuestionSubmitAddRequest, QuestionVO } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import CodeEditor from "@/components/CodeEditor.vue";
@@ -86,7 +80,7 @@ const form = reactive({
  */
 const doSubmit = async () => {
   console.log(form);
-  const resp = await QuestionSubmitControllerService.doQuestionSubmitUsingPost(form);
+  const resp = await QuestionControllerService.doQuestionSubmitUsingPost(form);
   if (resp.code === 0) {
     message.success("提交成功");
   } else {

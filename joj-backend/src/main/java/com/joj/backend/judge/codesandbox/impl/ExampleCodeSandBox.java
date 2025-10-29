@@ -14,7 +14,7 @@ import java.util.List;
  * 示例代码沙箱（仅为了跑通流程）
  */
 @Slf4j
-public class ExampleCodeSandBoxImpl implements CodeSandBox {
+public class ExampleCodeSandBox implements CodeSandBox {
     @Override
     public ExecuteCodeResponse executeCode(ExecuteCodeRequest executeCodeRequest) {
         System.out.println("示例代码沙箱（仅用于跑通流程）");

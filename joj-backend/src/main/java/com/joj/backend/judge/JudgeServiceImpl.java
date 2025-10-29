@@ -85,11 +85,16 @@ public class JudgeServiceImpl implements JudgeService {
         judgeContext.setJudgeCaseList(judgeCaseList);
         judgeContext.setQuestion(question);
 
+        log.info("得到了沙箱反馈的结果！");
+        log.info("judgeContext: {}", judgeContext);
+
         JudgeStrategy judgeStrategy = new DefaultJudgeStrategy();
         if (language.equals("java") || language.equals("python")) {
             judgeStrategy = new JavaLanguageJudgeStrategy();
         }
         JudgeInfo judgeInfoResult = judgeStrategy.doJudge(judgeContext);
+
+        log.info("看看判题结果judgeInfoResult: {}", judgeInfoResult);
 
         // 修改数据库中的判题结果
         log.info("开始更新数据库");
