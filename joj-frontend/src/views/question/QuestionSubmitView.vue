@@ -25,19 +25,21 @@
       @page-change="onPageChange"
     >
       <template #judgeInfo="{ record }"> {{ JSON.stringify(record.judgeInfo) }} </template>
-      <template #createTime="{ record }"> {{ moment(record.createTime).format("YYYY-MM-DD") }} </template>
+      <template #createTime="{ record }"> {{ moment(record.createTime).format("YYYY-MM-DD HH:mm:ss") }} </template>
     </a-table>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, watchEffect } from "vue";
-import { Question, QuestionControllerService } from "../../../generated";
+import { Question, QuestionControllerService, QuestionSubmitQueryRequest } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";
 
 const show = ref(true);
+
+const selectLanguage = ref(["all", "cpp", "java", "python", "go"]);
 
 const dataList = ref([]);
 const total = ref(10);
@@ -46,14 +48,15 @@ const searchParams = reactive({
   language: undefined,
   pageSize: 10,
   current: 1,
-});
+  sortField: "createTime",
+  sortOrder: "desc",
+} as QuestionSubmitQueryRequest);
 
 const loadData = async () => {
-  const resp = await QuestionControllerService.listQuestionSubmitByPageUsingPost({
-    ...searchParams,
-    sortField: "createTime",
-    sortOrder: "desc",
-  });
+  if (searchParams.language === "all") {
+    searchParams.language = undefined;
+  }
+  const resp = await QuestionControllerService.listQuestionSubmitByPageUsingPost(searchParams);
   if (resp.code === 0) {
     dataList.value = resp.data.records;
     total.value = resp.data.total;
