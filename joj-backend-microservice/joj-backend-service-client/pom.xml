@@ -21,6 +21,18 @@
         <spring-cloud.version>2021.0.5</spring-cloud.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>com.joj</groupId>
+            <artifactId>joj-backend-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.joj</groupId>
+            <artifactId>joj-backend-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -72,7 +84,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.joj.jojbackendserviceclient.JojBackendServiceClientApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
