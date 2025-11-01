@@ -5,7 +5,16 @@
 npm install
 ```
 
+## 根据后台生成代码
+
+```shell
+openapi --input http://127.0.0.1:8121/api/v2/api-docs --output ./generated axios
+```
+
+
+
 ### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
