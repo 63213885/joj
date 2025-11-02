@@ -12,8 +12,8 @@ spring:
         # 暂时禁用服务注册
         # register-enabled: false
   # 默认 dev 环境
-  profiles:
-    active: dev
+#  profiles:
+#    active: dev
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -45,7 +45,7 @@ server:
   address: 0.0.0.0
   port: 8104
   servlet:
-    context-path: /api
+    context-path: /api/judge
     # cookie 30 天过期
     session:
       cookie:

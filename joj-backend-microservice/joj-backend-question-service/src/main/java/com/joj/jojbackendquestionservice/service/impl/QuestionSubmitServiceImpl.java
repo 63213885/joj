@@ -19,8 +19,8 @@ import com.joj.jojbackendmodel.model.vo.QuestionSubmitVO;
 import com.joj.jojbackendquestionservice.mapper.QuestionSubmitMapper;
 import com.joj.jojbackendquestionservice.service.QuestionService;
 import com.joj.jojbackendquestionservice.service.QuestionSubmitService;
-import com.joj.jojbackendserviceclient.service.JudgeService;
-import com.joj.jojbackendserviceclient.service.UserService;
+import com.joj.jojbackendserviceclient.service.JudgeFeignClient;
+import com.joj.jojbackendserviceclient.service.UserFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,11 +46,11 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     private QuestionService questionService;
 
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
 
     @Resource
     @Lazy
-    private JudgeService judgeService;
+    private JudgeFeignClient judgeFeignClient;
 
     /**
      * 题目提交
@@ -95,7 +95,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         // todo 执行判题服务
         log.info("开始执行判题");
         CompletableFuture.runAsync(() -> {
-            judgeService.doJudge(questionSubmit.getId());
+            judgeFeignClient.doJudge(questionSubmit.getId());
         });
         return questionSubmit.getId();
     }
@@ -137,7 +137,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     public QuestionSubmitVO getQuestionSubmitVO(QuestionSubmit questionSubmit, User loginUser) {
         QuestionSubmitVO questionSubmitVO = QuestionSubmitVO.objToVo(questionSubmit);
         // 脱敏（仅管理员和用户本人可见）
-        if (!loginUser.getId().equals(questionSubmit.getUserId()) && !userService.isAdmin(loginUser)) {
+        if (!loginUser.getId().equals(questionSubmit.getUserId()) && !userFeignClient.isAdmin(loginUser)) {
             questionSubmitVO.setCode(null);
         }
         return questionSubmitVO;
