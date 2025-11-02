@@ -12,8 +12,8 @@ spring:
         # 暂时禁用服务注册
         # register-enabled: false
   # 默认 dev 环境
-#  profiles:
-#    active: dev
+  profiles:
+    active: dev
   # 支持 swagger3
   mvc:
     pathmatch:
