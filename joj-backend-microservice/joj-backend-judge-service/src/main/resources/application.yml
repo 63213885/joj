@@ -11,6 +11,11 @@ spring:
         server-addr: 127.0.0.1:8848
         # 暂时禁用服务注册
         # register-enabled: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    password: guest
+    username: guest
   # 默认 dev 环境
   profiles:
     active: dev
@@ -41,6 +46,7 @@ spring:
     multipart:
       # 大小限制
       max-file-size: 10MB
+
 server:
   address: 0.0.0.0
   port: 8104
@@ -50,6 +56,8 @@ server:
     session:
       cookie:
         max-age: 2592000
+        path: /api
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
@@ -65,8 +73,8 @@ codesandbox:
   type: remote
 
 ## 接口文档配置
-#knife4j:
-#  enable: true
+knife4j:
+  enable: true
 #  openapi:
 #    title: "接口文档"
 #    version: 1.0
