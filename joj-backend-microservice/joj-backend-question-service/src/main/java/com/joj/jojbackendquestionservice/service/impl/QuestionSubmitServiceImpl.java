@@ -17,6 +17,7 @@ import com.joj.jojbackendmodel.model.enums.QuestionSubmitLanguageEnum;
 import com.joj.jojbackendmodel.model.enums.QuestionSubmitStatusEnum;
 import com.joj.jojbackendmodel.model.vo.QuestionSubmitVO;
 import com.joj.jojbackendquestionservice.mapper.QuestionSubmitMapper;
+import com.joj.jojbackendquestionservice.rabbitmq.MyMessageProducer;
 import com.joj.jojbackendquestionservice.service.QuestionService;
 import com.joj.jojbackendquestionservice.service.QuestionSubmitService;
 import com.joj.jojbackendserviceclient.service.JudgeFeignClient;
@@ -51,6 +52,9 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Resource
     @Lazy
     private JudgeFeignClient judgeFeignClient;
+
+    @Resource
+    private MyMessageProducer myMessageProducer;
 
     /**
      * 题目提交
@@ -92,11 +96,13 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         if (!save) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目提交失败");
         }
-        // todo 执行判题服务
+        //  执行判题服务
+        // 发送消息
         log.info("开始执行判题");
-        CompletableFuture.runAsync(() -> {
-            judgeFeignClient.doJudge(questionSubmit.getId());
-        });
+        myMessageProducer.sendMessage("code_exchange", "my_routing_key", String.valueOf(questionSubmit.getId()));
+//        CompletableFuture.runAsync(() -> {
+//            judgeFeignClient.doJudge(questionSubmit.getId());
+//        });
         return questionSubmit.getId();
     }
 
