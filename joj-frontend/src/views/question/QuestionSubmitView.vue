@@ -39,7 +39,7 @@ import { Question, QuestionControllerService, QuestionSubmitQueryRequest } from 
 
 const show = ref(true);
 
-const selectLanguage = ref(["all", "cpp", "java", "python", "go"]);
+const selectLanguage = ref([undefined, "cpp", "java", "python", "go"]);
 
 const dataList = ref([]);
 const total = ref(10);
@@ -53,9 +53,6 @@ const searchParams = reactive({
 } as QuestionSubmitQueryRequest);
 
 const loadData = async () => {
-  if (searchParams.language === "all") {
-    searchParams.language = undefined;
-  }
   const resp = await QuestionControllerService.listQuestionSubmitByPageUsingPost(searchParams);
   if (resp.code === 0) {
     dataList.value = resp.data.records;

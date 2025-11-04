@@ -97,10 +97,12 @@ public class UserController {
      */
     @PostMapping("/logout")
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
+        log.info("用户注销");
         if (request == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         boolean result = userService.userLogout(request);
+        log.info("注销结果：{}", result);
         return ResultUtils.success(result);
     }
 
@@ -112,7 +114,7 @@ public class UserController {
      */
     @GetMapping("/get/login")
     public BaseResponse<LoginUserVO> getLoginUser(HttpServletRequest request) {
-        log.info("getLoginUserRequest:{}",request);
+        log.info("获取当前登录用户信息: {}",request);
         User user = userService.getLoginUser(request);
         return ResultUtils.success(userService.getLoginUserVO(user));
     }

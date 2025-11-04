@@ -14,13 +14,23 @@
       </a-menu>
     </a-col>
     <a-col flex="100px">
-      <div v-if="store.state.user?.loginUser?.userName">
-        {{ store.state.user?.loginUser?.userName ?? "未登录" }}
+      <div v-if="checkAccess(store.state.user?.loginUser, ACCESS_ENUM.USER)">
+        <a-dropdown @select="handleSelect">
+          <a-avatar :style="{ backgroundColor: '#3370ff' }">
+            <!--            <IconUser />-->
+            {{ store.state.user?.loginUser?.userName ?? "登录有bug了" }}
+          </a-avatar>
+          <template #content>
+            <a-doption value="profile">个人中心</a-doption>
+            <a-doption value="space">我的空间</a-doption>
+            <a-doption value="logout">退出登录</a-doption>
+          </template>
+        </a-dropdown>
       </div>
       <div v-else>
         <a-space>
-          <a-button type="primary" @click="doRegister">注册</a-button>
-          <a-button type="outline" @click="doLogin">登录</a-button>
+          <a-button type="primary" @click="doLogin">登录</a-button>
+          <a-button type="outline" @click="doRegister">注册</a-button>
         </a-space>
       </div>
     </a-col>
@@ -59,26 +69,6 @@ router.afterEach((to, from, failure) => {
   selectedKeys.value = [to.path];
 });
 
-// console.log(store.state.user.loginUser);
-
-// store.dispatch("user/getLoginUser", {
-//   userName: "jzz",
-//   userRole: ACCESS_ENUM.ADMIN,
-// });
-
-// setTimeout(() => {
-//   store.dispatch("user/getLoginUser", {
-//     userName: "jzz",
-//     userRole: ACCESS_ENUM.ADMIN,
-//   });
-//   // console.log(store.state.user.loginUser);
-//   // console.log(visibleRoutes.value);
-//   // visibleRoutes.filter((item, index) => {
-//   //   console.log(item);
-//   //   return true;
-//   // });
-// }, 3000);
-
 const doMenuclick = (key: string) => {
   router.push({
     path: key,
@@ -95,6 +85,17 @@ const doRegister = () => {
   router.push({
     path: "/user/register",
   });
+};
+
+const handleSelect = async (value: string) => {
+  if (value === "logout") {
+    await store.dispatch("user/Logout");
+    router.push({ path: "/" });
+  } else if (value === "profile") {
+    router.push("/user/profile");
+  } else {
+    router.push("/user/space");
+  }
 };
 </script>
 
