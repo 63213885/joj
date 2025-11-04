@@ -42,11 +42,11 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, watchEffect, withDefaults, defineProps } from "vue";
-import { Question, QuestionControllerService, QuestionSubmitAddRequest, QuestionVO } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
+import { QuestionControllerService, QuestionSubmitAddRequest, QuestionVO } from "../../../generated/question";
 
 interface Props {
   id: number;

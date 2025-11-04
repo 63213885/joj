@@ -79,10 +79,10 @@
 <script setup lang="ts">
 import { onMounted, reactive } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
-import { QuestionControllerService } from "../../../generated";
 import { Message } from "@arco-design/web-vue";
 import { useRoute } from "vue-router";
 import message from "@arco-design/web-vue/es/message";
+import { QuestionControllerService } from "../../../generated/question";
 
 const route = useRoute();
 // 如果页面URL包含update，视为更新页面

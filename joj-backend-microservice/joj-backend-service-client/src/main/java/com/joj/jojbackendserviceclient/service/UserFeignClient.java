@@ -6,6 +6,7 @@ import com.joj.jojbackendcommon.exception.BusinessException;
 import com.joj.jojbackendmodel.model.entity.User;
 import com.joj.jojbackendmodel.model.enums.UserRoleEnum;
 import com.joj.jojbackendmodel.model.vo.UserVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,7 @@ public interface UserFeignClient {
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if (currentUser == null || currentUser.getId() == null) {
+            System.out.println("UserFeignClient获取登录用户失败");
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         return currentUser;

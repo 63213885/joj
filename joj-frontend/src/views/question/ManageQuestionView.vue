@@ -23,9 +23,9 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, watchEffect } from "vue";
-import { Question, QuestionControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
+import { Question, QuestionControllerService } from "../../../generated/question";
 
 const show = ref(true);
 

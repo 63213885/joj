@@ -42,6 +42,9 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/question_submit",
     name: "浏览题目提交",
     component: QuestionSubmitView,
+    meta: {
+      access: ACCESS_ENUM.USER, // todo 不登录不能看？
+    },
   },
   {
     path: "/view/question/:id",

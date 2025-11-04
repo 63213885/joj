@@ -14,7 +14,15 @@
       </a-menu>
     </a-col>
     <a-col flex="100px">
-      <div>{{ store.state.user?.loginUser?.userName ?? "未登录" }}</div>
+      <div v-if="store.state.user?.loginUser?.userName">
+        {{ store.state.user?.loginUser?.userName ?? "未登录" }}
+      </div>
+      <div v-else>
+        <a-space>
+          <a-button type="primary" @click="doRegister">注册</a-button>
+          <a-button type="outline" @click="doLogin">登录</a-button>
+        </a-space>
+      </div>
     </a-col>
   </a-row>
 </template>
@@ -74,6 +82,18 @@ router.afterEach((to, from, failure) => {
 const doMenuclick = (key: string) => {
   router.push({
     path: key,
+  });
+};
+
+const doLogin = () => {
+  router.push({
+    path: "/user/login",
+  });
+};
+
+const doRegister = () => {
+  router.push({
+    path: "/user/register",
   });
 };
 </script>
