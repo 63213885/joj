@@ -98,8 +98,8 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         }
         //  执行判题服务
         // 发送消息
-        log.info("开始执行判题");
-        myMessageProducer.sendMessage("code_exchange", "my_routing_key", String.valueOf(questionSubmit.getId()));
+        log.info("执行判题的信息发往消息队列");
+        myMessageProducer.sendMessage("code_exchange", "my_routingKey", String.valueOf(questionSubmit.getId()));
 //        CompletableFuture.runAsync(() -> {
 //            judgeFeignClient.doJudge(questionSubmit.getId());
 //        });

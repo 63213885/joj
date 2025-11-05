@@ -22,7 +22,7 @@ public class MyMessageConsumer {
     @SneakyThrows
     @RabbitListener(queues = {"code_queue"}, ackMode = "MANUAL")
     public void receiveMessage(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) {
-        log.info("receiveMessage message = {}", message);
+        log.info("消息队列 receiveMessage message = {}", message);
         long questionSubmitId = Long.parseLong(message);
         try {
             judgeService.doJudge(questionSubmitId);
