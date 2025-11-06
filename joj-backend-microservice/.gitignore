@@ -4,6 +4,13 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### 项目数据文件 ###
+.mysql-data/
+.nacos-data
+.nacos-logs
+.rabbitmq-data
+.redis-data
+
 ### STS ###
 .apt_generated
 .classpath

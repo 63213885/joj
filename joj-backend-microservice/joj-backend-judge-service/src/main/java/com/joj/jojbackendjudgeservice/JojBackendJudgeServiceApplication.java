@@ -29,7 +29,7 @@ public class JojBackendJudgeServiceApplication {
 
     public static void main(String[] args) {
         // 初始化消息队列
-        InitRabbitMq.doInit();
+        // InitRabbitMq.doInit();
         SpringApplication.run(JojBackendJudgeServiceApplication.class, args);
     }
 

@@ -1,0 +1,54 @@
+version: '3'
+services:
+  joj-backend-gateway:
+    container_name: joj-backend-gateway
+    build:
+      context: ./joj-backend-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8101:8101"
+    networks:
+      - JojNetwork
+
+  joj-backend-user-service:
+    container_name: joj-backend-user-service
+    build:
+      context: ./joj-backend-user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8102:8102"
+    networks:
+      - JojNetwork
+    depends_on:
+      - joj-backend-gateway
+
+  joj-backend-question-service:
+    container_name: joj-backend-question-service
+    build:
+      context: ./joj-backend-question-service
+      dockerfile: Dockerfile
+    ports:
+      - "8103:8103"
+    networks:
+      - JojNetwork
+    depends_on:
+      - joj-backend-user-service
+      - joj-backend-gateway
+
+  joj-backend-judge-service:
+    container_name: joj-backend-judge-service
+    build:
+      context: ./joj-backend-judge-service
+      dockerfile: Dockerfile
+    ports:
+      - "8104:8104"
+    networks:
+      - JojNetwork
+    depends_on:
+      - joj-backend-user-service
+      - joj-backend-question-service
+      - joj-backend-gateway
+
+# 网络，不定义的话就是默认网络
+networks:
+  JojNetwork:

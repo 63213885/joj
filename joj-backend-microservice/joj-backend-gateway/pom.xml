@@ -91,7 +91,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.joj.jojbackendgateway.JojBackendGatewayApplication</mainClass>
-                    <skip>true</skip>
+<!--                    <skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>

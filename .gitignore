@@ -4,6 +4,12 @@
 node_modules
 /dist
 
+### 项目数据文件 ###
+.mysql-data/
+.nacos-data
+.nacos-logs
+.rabbitmq-data
+.redis-data
 
 # local env files
 .env.local
